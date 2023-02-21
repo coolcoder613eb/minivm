@@ -16,7 +16,7 @@ OBJS := $(VM_OBJS)
 
 default: all
 
-all: bins libs
+all: bins libs shared
 
 format: .dummy
 	find . -name '*.c' | xargs -I FILENAME clang-format -style=file -i FILENAME
@@ -44,6 +44,10 @@ clang-pgo-build: .dummy
 # binaries
 
 libs: bin/libminivm.a
+
+shared: 
+	@mkdir -p bin
+	$(CC) -shared $(OBJS) -o minivm.dll -lm $(LDFLAGS)
 
 bins: bin/minivm-run bin/minivm-asm bin/vm2js
 
